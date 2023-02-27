@@ -38,7 +38,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                                     where
                                             hotelCd = @HotelCode
                                         and intPartner in ('LGConnect', 'HG', 'SiteConnect')
-                                        and stsactv = 'A'
+                                        and coalesce(stsDelete, '') = ''
                                     order by intAccNo desc",
                                     new
                                     {

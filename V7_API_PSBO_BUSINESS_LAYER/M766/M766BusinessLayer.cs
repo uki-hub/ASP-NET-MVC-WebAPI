@@ -211,14 +211,17 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 result.Add(new RatePlanMappingModel
                 {
                     RateTierNo = r.tierno,
+                    RateTierCode = r.tiercode,
                     RatePlanName = r.tiername,
-                    isConnected = connectedRates.FirstOrDefault(_r => _r.tierNo == r.tierno) != null,
-                    isNoUpdateAvailability = isNoUpdateAvailability,
-                    isNoUpdateRate = isNoUpdateRate,
-                    isNoUpdateRestriction = isNoUpdateRestriction
+                    StsConnected = connectedRates.FirstOrDefault(_r => _r.tierNo == r.tierno) != null,
+                    StsNoUpdateAvailability = isNoUpdateAvailability,
+                    StsNoUpdateRate = isNoUpdateRate,
+                    StsNoUpdate = isNoUpdateRestriction
 
                 });
             });
+
+            //var orderedResult = result.OrderBy(r => r.RateTierCode).ToList();
 
             return new PelicanResponseModel<List<RatePlanMappingModel>>
             {

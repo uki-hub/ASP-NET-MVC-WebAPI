@@ -19,7 +19,8 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
 	                                from hem051
 	                                where
 			                                hem051.hotelcd = @HotelCode
-		                                and coalesce(stsdelete, '') = ''",
+		                                and coalesce(stsdelete, '') = ''
+                                    order by dispordnum",
                                     new
                                     {
                                         HotelCode = hotelCode

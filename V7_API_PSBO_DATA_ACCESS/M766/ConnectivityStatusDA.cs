@@ -23,7 +23,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                                     new
                                     {
                                         IntAccNo = intAccNo,
-                                        StsActive = stsActive ? "Y" : null,
+                                        StsActive = stsActive ? "A" : null,
                                         StsSendRsv = stsSendRsv ? "Y" : null,
                                         StartTime = startTime
                                     });

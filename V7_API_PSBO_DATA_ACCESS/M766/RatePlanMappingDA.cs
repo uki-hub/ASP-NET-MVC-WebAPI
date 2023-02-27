@@ -14,12 +14,13 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
         public List<HER131> GetHotelRates(string hotelCode)
         {
             return base.SQL.GetQuery<HER131>($@"
-                                select
-	                                *
-	                                from HEReserv..HER131
-	                                where
-			                                hotelcd = @HotelCode
-		                                and (coalesce(stsactv, '') = '' or stsactv = 'A')",
+                                    select
+	                                    *
+	                                    from HEReserv..HER131
+	                                    where
+			                                    hotelcd = @HotelCode
+		                                    and (coalesce(stsactv, '') = '' or stsactv = 'A')
+                                        order by tiercode ",
                                     new
                                     {
                                         HotelCode = hotelCode

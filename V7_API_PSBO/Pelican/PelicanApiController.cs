@@ -70,9 +70,11 @@ namespace V7_API_PSBO.Pelican
 
             var model = new PelicanResponseModel<string>
             {
-                Data = "",
+                Data = null,
                 Success = false,
-                Messages = new List<string> { errorMessage }
+                //Messages = new List<string> { errorMessage }
+                Messages = new List<string> { "Invalid Data" }
+
             };
 
             response.StatusCode = statusCode;
