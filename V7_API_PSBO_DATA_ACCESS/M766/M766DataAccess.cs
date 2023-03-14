@@ -31,6 +31,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                                     intAccNo, 
                                     accID, 
                                     intPartner, 
+                                    datacenter,
                                     stsactv,
 	                                stsSendRsv,
 	                                startTime

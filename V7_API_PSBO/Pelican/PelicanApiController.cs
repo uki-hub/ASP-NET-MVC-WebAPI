@@ -68,12 +68,13 @@ namespace V7_API_PSBO.Pelican
                 errorMessage = e.ToString();
             }
 
+            var isAllowDebugDetails = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["AllowDebugDetails"]);
+
             var model = new PelicanResponseModel<string>
             {
                 Data = null,
                 Success = false,
-                //Messages = new List<string> { errorMessage }
-                Messages = new List<string> { "Invalid Data" }
+                Messages = new List<string> { isAllowDebugDetails ? errorMessage : "Invalid Data" }
 
             };
 

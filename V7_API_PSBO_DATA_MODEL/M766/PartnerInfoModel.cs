@@ -12,8 +12,9 @@ namespace V7_API_PSBO_DATA_MODEL.M766
         public string IntAccNo { get; set; }
         public string AccID { get; set; }
         public string IntPartner { get; set; }
+        public string DataCenter { get; set; }
         public bool StatusActive { get; set; }
         public bool StatusSendReservation { get; set; }
-        public DateTime StartDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
     }
 }

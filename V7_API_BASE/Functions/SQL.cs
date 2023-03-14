@@ -5,8 +5,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using V7_API_BASE.Base;
 
 namespace V7_API_BASE.Functions
@@ -17,7 +15,7 @@ namespace V7_API_BASE.Functions
         SqlConnection _conn { get; set; }
 
         public SQL(string connectionString = "")
-        {            
+        {
             string cs = connectionString;
 
             if (String.IsNullOrEmpty(cs))
@@ -36,14 +34,11 @@ namespace V7_API_BASE.Functions
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    result = _conn.Query<T>(q, param).ToList();
-                }
+                result = _conn.Query<T>(q, param).ToList();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -61,14 +56,11 @@ namespace V7_API_BASE.Functions
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    result = _conn.QuerySingle<T>(q, param);
-                }
+                result = _conn.QuerySingle<T>(q, param);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -86,14 +78,11 @@ namespace V7_API_BASE.Functions
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    result = _conn.ExecuteScalar<T>(q, param);
-                }
+                result = _conn.ExecuteScalar<T>(q, param);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -111,14 +100,11 @@ namespace V7_API_BASE.Functions
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    result = _conn.Query<T>(sp, param, commandType: CommandType.StoredProcedure).ToList();
-                }
+                result = _conn.Query<T>(sp, param, commandType: CommandType.StoredProcedure).ToList();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -127,7 +113,7 @@ namespace V7_API_BASE.Functions
 
             return result;
 
-            
+
         }
 
         public override bool ExecuteQuery(string q, object param = null)
@@ -136,14 +122,11 @@ namespace V7_API_BASE.Functions
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    _conn.Execute(q, param);
-                }
+                _conn.Execute(q, param);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -154,19 +137,16 @@ namespace V7_API_BASE.Functions
         }
 
         public override bool ExecuteStoredProcedure(string sp, object param = null)
-        {           
+        {
             try
             {
                 _conn.Open();
 
-                using (IDbConnection dbConn = _conn)
-                {
-                    dbConn.Execute(sp, param, commandType: CommandType.StoredProcedure);
-                }
+                _conn.Execute(sp, param, commandType: CommandType.StoredProcedure);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
             finally
             {
@@ -186,8 +166,8 @@ namespace V7_API_BASE.Functions
             catch (Exception _)
             {
 
-                
-            }            
+
+            }
         }
     }
 }

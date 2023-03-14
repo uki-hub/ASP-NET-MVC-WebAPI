@@ -145,11 +145,13 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
 
         public bool UpdateHem750(string rateTierNo, string intAccNo, string stsNoAvailUpdate, string stsNoRateUpdate, string stsNoUpdate, string updater, string dateTimeNow)
         {
-            return base.SQL.ExecuteQuery(@"
+            var stsNoUpdateQuery = stsNoUpdate == null ? "" : ",stsnoupdate = @StsNoUpdate";
+
+            return base.SQL.ExecuteQuery($@"
                         update hem750 set
 	                        stsnoavailupdate = @StsNoAvailUpdate
 	                        ,stsnorateupdate = @StsNoRateUpdate
-	                        ,stsnoupdate = @StsNoUpdate
+	                        {stsNoUpdateQuery}
 	                        ,updater = @Updater
 	                        ,lastupdate = @LastUpdate
                         where
@@ -161,7 +163,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                             RateTierNo = rateTierNo,
                             StsNoAvailUpdate = stsNoAvailUpdate,
                             StsNoRateUpdate = stsNoRateUpdate,
-                            StsNoUpdate = stsNoUpdate,
+                            StsNoUpdate = stsNoUpdate == "N" ? null : "Y",
                             Updater = updater,
                             LastUpdate = dateTimeNow
                         });

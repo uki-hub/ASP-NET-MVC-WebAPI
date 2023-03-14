@@ -11,7 +11,7 @@ namespace V7_API_PSBO_DATA_MODEL.M766
         public string RoomTypeCode { get; set; }
         public string RoomTypeName { get; set; }
         public bool IsConnected { get; set; }
-        public int MaxAdult { get; set; }
-        public int MaxXtraBed { get; set; }
+        public int? MaxAdult { get; set; }
+        public int? MaxXtraBed { get; set; }
     }
 }

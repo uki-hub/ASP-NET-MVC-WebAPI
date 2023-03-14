@@ -68,7 +68,7 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
             };
         }
 
-        public PelicanResponseModel<object> ConnectRoom(RoomConnectModel roomConnectModel)
+        public PelicanResponseModel<bool> ConnectRoom(RoomConnectModel roomConnectModel)
         {
             var da = _da.RoomTypeMappingDA;
 
@@ -113,13 +113,14 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
 
-        public PelicanResponseModel<object> UpdateConnectedRoom(RoomConnectModel roomConnectModel)
+        public PelicanResponseModel<bool> UpdateConnectedRoom(RoomConnectModel roomConnectModel)
         {
             var da = _da.RoomTypeMappingDA;
 
@@ -149,13 +150,14 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
 
-        public PelicanResponseModel<object> DisconnetRoom(RoomConnectModel roomConnectModel)
+        public PelicanResponseModel<bool> DisconnetRoom(RoomConnectModel roomConnectModel)
         {
             var da = _da.RoomTypeMappingDA;
 
@@ -186,8 +188,9 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
@@ -207,18 +210,31 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 var isNoUpdateAvailability = rateTierStatus.FirstOrDefault(s => s.stsnoavailupdate == "Y") != null;
                 var isNoUpdateRate = rateTierStatus.FirstOrDefault(s => s.stsnorateupdate == "Y") != null;
                 var isNoUpdateRestriction = rateTierStatus.FirstOrDefault(s => s.stsnoupdate == "Y") != null;
+                var isConnected = connectedRates.FirstOrDefault(_r => _r.tierNo == r.tierno) != null;
 
-                result.Add(new RatePlanMappingModel
+                var newItem = new RatePlanMappingModel
                 {
                     RateTierNo = r.tierno,
                     RateTierCode = r.tiercode,
                     RatePlanName = r.tiername,
-                    StsConnected = connectedRates.FirstOrDefault(_r => _r.tierNo == r.tierno) != null,
-                    StsNoUpdateAvailability = isNoUpdateAvailability,
-                    StsNoUpdateRate = isNoUpdateRate,
-                    StsNoUpdate = isNoUpdateRestriction
+                    StsConnected = isConnected
 
-                });
+                };
+
+                if (isConnected)
+                {
+                    newItem.StsNoUpdateAvailability = isNoUpdateAvailability;
+                    newItem.StsNoUpdateRate = isNoUpdateRate;
+                    newItem.StsNoUpdate = isNoUpdateRestriction;
+                }
+                else
+                {
+                    newItem.StsNoUpdateAvailability = true;
+                    newItem.StsNoUpdateRate = true;
+                    newItem.StsNoUpdate = true;
+                }
+
+                result.Add(newItem);
             });
 
             //var orderedResult = result.OrderBy(r => r.RateTierCode).ToList();
@@ -230,7 +246,7 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
             };
         }
 
-        public PelicanResponseModel<object> ConnectRate(RateConnectModel rateConnectModel)
+        public PelicanResponseModel<bool> ConnectRate(RateConnectModel rateConnectModel)
         {
             var da = _da.RatePlanMappingDA;
 
@@ -257,7 +273,7 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                     rateTierNo: rateConnectModel.RateTierNo,
                     stsNoAvailUpdate: rateConnectModel.StsNoAvailUpdate ? "Y" : null,
                     stsNoRateUpdate: rateConnectModel.StsNoRateUpdate ? "Y" : null,
-                    stsNoUpdate: rateConnectModel.StsNoUpdate ? "Y" : null,
+                    stsNoUpdate: (rateConnectModel.StsNoUpdate.HasValue && rateConnectModel.StsNoUpdate.Value) ? "Y" : null,
                     listRoomTypeCode: listRoomTypeCode,
                     updater: _userModel.UserCode,
                     dateTimeNow: DateTimeNow_yyyyMMddHHmmss
@@ -276,13 +292,14 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
 
-        public PelicanResponseModel<object> UpdateConnectedRate(RateConnectModel rateConnectModel)
+        public PelicanResponseModel<bool> UpdateConnectedRate(RateConnectModel rateConnectModel)
         {
             var da = _da.RatePlanMappingDA;
 
@@ -290,12 +307,16 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
             {
                 da.BeginTransaction();
 
+                string stsNoUpdate = null;
+                if (rateConnectModel.StsNoUpdate.HasValue)
+                    stsNoUpdate = rateConnectModel.StsNoUpdate.Value ? "Y" : "N";
+
                 da.UpdateHem750(
                     intAccNo: _userModel.IntAccNo,
                     rateTierNo: rateConnectModel.RateTierNo,
                     stsNoAvailUpdate: rateConnectModel.StsNoAvailUpdate ? "Y" : null,
                     stsNoRateUpdate: rateConnectModel.StsNoRateUpdate ? "Y" : null,
-                    stsNoUpdate: rateConnectModel.StsNoUpdate ? "Y" : null,
+                    stsNoUpdate: stsNoUpdate,
                     updater: _userModel.UserCode,
                     dateTimeNow: DateTimeNow_yyyyMMddHHmmss
                     );
@@ -313,13 +334,14 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
 
-        public PelicanResponseModel<object> DisconnectRate(RateConnectModel rateConnectModel)
+        public PelicanResponseModel<bool> DisconnectRate(RateConnectModel rateConnectModel)
         {
             var da = _da.RatePlanMappingDA;
 
@@ -350,8 +372,9 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                 da.EndTransaction();
             }
 
-            return new PelicanResponseModel<object>
+            return new PelicanResponseModel<bool>
             {
+                Data = true,
                 Success = true
             };
         }
@@ -359,11 +382,11 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
 
         #region Menu 3
         public PelicanResponseModel<ConnectivityStatusModel> UpdateConnectivityStatus(ConnectivityStatusModel model)
-        {
+        {           
             var success = _da.ConnectivityStatusDA.UpdateConnectivity(
-                                                    intAccNo: _userModel.IntAccNo, 
-                                                    stsActive: model.StatusActive, 
-                                                    stsSendRsv: model.StatusSendReservation, 
+                                                    intAccNo: _userModel.IntAccNo,
+                                                    stsActive: model.StatusActive ? "A" : "I",
+                                                    stsSendRsv: model.StatusSendReservation ? "Y" : null,
                                                     startTime: DateTimeTo_yyyMMddHHmmss(model.StartDateTime));
 
             return new PelicanResponseModel<ConnectivityStatusModel>
@@ -380,7 +403,23 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
 
             var startDateTime = hem261.startTime;
             if (!startDateTime.HasValue)
-                startDateTime = new DateTime();
+                startDateTime = null;
+
+            var dataCenter = "";
+            switch (hem261.intPartner)
+            {
+                case "LGConnect":
+                    dataCenter = hem261.datacenter.Trim();
+                    break;
+
+                case "SiteConnect":
+                    dataCenter = "SiteMinder";
+                    break;
+
+                case "HG":
+                    dataCenter = "Hoteliers.Guru";
+                    break;                
+            }
 
             var response = new PelicanResponseModel<PartnerInfoModel>();
 
@@ -390,10 +429,11 @@ namespace V7_API_PSBO_BUSINESS_LAYER.M766
                     IntAccNo = hem261.intAccNo,
                     AccID = hem261.accID,
                     IntPartner = hem261.intPartner,
+                    DataCenter = dataCenter,
                     HotelCode = hem261.hotelCd,
                     StatusActive = hem261.stsactv == "A",
                     StatusSendReservation = hem261.stsSendRsv == "Y",
-                    StartDateTime = startDateTime.Value
+                    StartDateTime = startDateTime
                 };
 
             response.Success = true;

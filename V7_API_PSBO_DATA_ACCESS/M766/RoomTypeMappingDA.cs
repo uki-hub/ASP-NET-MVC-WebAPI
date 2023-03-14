@@ -61,7 +61,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                                     });
         }
 
-        public bool InsertHem264(string intAccNo, string roomTypeCode, int maxAdult, int maxXtraBed, string updater, string dateTimeNow)
+        public bool InsertHem264(string intAccNo, string roomTypeCode, int? maxAdult, int? maxXtraBed, string updater, string dateTimeNow)
         {
             return base.SQL.ExecuteQuery(@"
                                 insert into hem264 
@@ -122,7 +122,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
             return true;
         }
 
-        public bool UpdateHem264(string intAccNo, string roomTypeCode, int maxAdult, int maxXtraBed, string updater, string dateTimeNow)
+        public bool UpdateHem264(string intAccNo, string roomTypeCode, int? maxAdult, int? maxXtraBed, string updater, string dateTimeNow)
         {
             return base.SQL.ExecuteQuery(@"
                 update hem264 set

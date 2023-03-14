@@ -18,7 +18,10 @@ namespace V7_API_PSBO.Base
 
         internal T FromJSON<T>(string json) => JsonConvert.DeserializeObject<T>(json);
 
-        internal string ToJSON(object o) => JsonConvert.SerializeObject(o, new JsonSerializerSettings() { DateFormatString = "yyyy-MM-dd HH:mm:ss" });
+        internal string ToJSON(object o) => JsonConvert.SerializeObject(o, new JsonSerializerSettings() {
+            DateFormatString = "yyyy-MM-dd HH:mm:ss",
+            NullValueHandling = NullValueHandling.Include
+        });
 
         //internal ObjectContent JsonContent(string json) => new ObjectContent<string>(json, new JsonMediaTypeFormatter(), "application/json");
         //internal ObjectContent JsonContent(object o) => new ObjectContent<string>(ToJSON(o), new JsonMediaTypeFormatter(), "application/json");

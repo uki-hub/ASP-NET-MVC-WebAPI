@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using V7_API_PSBO.Base;
 using V7_API_PSBO.Pelican;
 using V7_API_PSBO_BUSINESS_LAYER.M766;
@@ -14,6 +15,7 @@ using V7_API_PSBO_DATA_MODEL.Pelican;
 
 namespace V7_API_PSBO.Controllers
 {
+    //[EnableCors(origins: "*", headers: "*", methods: "*")] // tune to your needs
     [RoutePrefix("api/m766")]
     public class M766Controller : PelicanApiController
     {

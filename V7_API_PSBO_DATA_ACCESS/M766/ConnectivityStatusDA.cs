@@ -11,7 +11,7 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
 {
     public class ConnectivityStatusDA : BaseDataAccess
     {
-        public bool UpdateConnectivity(string intAccNo, bool stsActive, bool stsSendRsv, string startTime)
+        public bool UpdateConnectivity(string intAccNo, string stsActive, string stsSendRsv, string startTime)
         {
             return base.SQL.ExecuteQuery($@"
                                 update hem261 set 
@@ -23,8 +23,8 @@ namespace V7_API_PSBO_DATA_ACCESS.M766
                                     new
                                     {
                                         IntAccNo = intAccNo,
-                                        StsActive = stsActive ? "A" : null,
-                                        StsSendRsv = stsSendRsv ? "Y" : null,
+                                        StsActive = stsActive,
+                                        StsSendRsv = stsSendRsv,
                                         StartTime = startTime
                                     });
         }
